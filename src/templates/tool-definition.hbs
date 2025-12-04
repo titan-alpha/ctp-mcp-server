@@ -1,0 +1,67 @@
+/**
+ * {{name}} Tool Definition
+ *
+ * {{description}}
+ *
+ * Category: {{category}}
+ * Execution Mode: {{executionMode}}
+ */
+
+import { ToolDefinition, ToolFunction, ToolResult } from '@conveniencepro/ctp-core';
+
+/**
+ * Tool definition
+ */
+export const {{camelCaseName}}Definition: ToolDefinition = {
+  id: '{{id}}',
+  name: '{{name}}',
+  description: '{{description}}',
+  category: '{{category}}',
+  tags: [{{#each tags}}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}],
+  method: '{{method}}',
+  parameters: [
+{{#each parameters}}
+    {
+      name: '{{name}}',
+      type: '{{type}}',
+      label: '{{label}}',
+      description: '{{description}}',
+      required: {{required}},
+{{#if placeholder}}
+      placeholder: '{{placeholder}}',
+{{/if}}
+{{#if default}}
+      default: {{{json default}}},
+{{/if}}
+{{#if minLength}}
+      minLength: {{minLength}},
+{{/if}}
+{{#if maxLength}}
+      maxLength: {{maxLength}},
+{{/if}}
+{{#if min}}
+      min: {{min}},
+{{/if}}
+{{#if max}}
+      max: {{max}},
+{{/if}}
+{{#if options}}
+      options: [
+{{#each options}}
+        { value: '{{value}}', label: '{{label}}', description: '{{description}}' }{{#unless @last}},{{/unless}}
+{{/each}}
+      ],
+{{/if}}
+    },
+{{/each}}
+  ],
+  outputDescription: '{{outputDescription}}',
+  example: {
+    input: {{{json example.input}}},
+    output: {{{json example.output}}},
+    name: '{{example.name}}',
+  },
+  version: '1.0.0',
+  icon: '{{icon}}',
+  executionMode: '{{executionMode}}',
+};

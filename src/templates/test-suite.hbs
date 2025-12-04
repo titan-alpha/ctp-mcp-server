@@ -1,0 +1,72 @@
+/**
+ * Tests for {{name}}
+ */
+
+import { describe, it } from 'node:test';
+import assert from 'node:assert';
+import { {{camelCaseName}}Fn, {{pascalCaseName}}Result } from './{{kebabCaseName}}.js';
+import { {{camelCaseName}}Definition } from './{{kebabCaseName}}-definition.js';
+
+describe('{{name}}', () => {
+  describe('Definition', () => {
+    it('should have valid definition structure', () => {
+      assert.strictEqual({{camelCaseName}}Definition.id, '{{id}}');
+      assert.strictEqual({{camelCaseName}}Definition.name, '{{name}}');
+      assert.strictEqual({{camelCaseName}}Definition.category, '{{category}}');
+    });
+
+    it('should have all required parameters', () => {
+      const requiredParams = {{camelCaseName}}Definition.parameters.filter(p => p.required);
+      assert.ok(requiredParams.length > 0, 'Should have at least one required parameter');
+    });
+  });
+
+  describe('Implementation', () => {
+    it('should execute successfully with valid input', () => {
+      const result = {{camelCaseName}}Fn({{camelCaseName}}Definition.example.input);
+      assert.strictEqual(result.success, true);
+      if (result.success) {
+        assert.ok(result.data, 'Should return data');
+      }
+    });
+
+    it('should validate required parameters', () => {
+      const result = {{camelCaseName}}Fn({});
+      assert.strictEqual(result.success, false);
+      if (!result.success) {
+        assert.ok(result.error, 'Should return error message');
+      }
+    });
+
+{{#each testCases}}
+    it('{{description}}', () => {
+      const result = {{../camelCaseName}}Fn({{{json input}}});
+      assert.strictEqual(result.success, {{expectedSuccess}});
+{{#if expectedSuccess}}
+      if (result.success) {
+        {{#each assertions}}
+        assert.{{assertType}}(result.data.{{field}}, {{json expected}});
+        {{/each}}
+      }
+{{else}}
+      if (!result.success) {
+        assert.ok(result.error.includes('{{expectedError}}'));
+      }
+{{/if}}
+    });
+
+{{/each}}
+  });
+
+  describe('Edge Cases', () => {
+    it('should handle empty input gracefully', () => {
+      const result = {{camelCaseName}}Fn({});
+      assert.ok(result.success !== undefined);
+    });
+
+    it('should handle malformed input', () => {
+      const result = {{camelCaseName}}Fn({ invalidParam: 'test' });
+      assert.ok(result.success !== undefined);
+    });
+  });
+});

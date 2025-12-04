@@ -1,0 +1,60 @@
+/**
+ * {{name}} Implementation (Client-side)
+ *
+ * {{description}}
+ */
+
+import { ToolFunction, ToolResult, success, failure } from '@conveniencepro/ctp-core';
+import { {{camelCaseName}}Definition } from './{{kebabCaseName}}-definition.js';
+
+/**
+ * Result type for {{name}}
+ */
+export interface {{pascalCaseName}}Result {
+{{#each outputFields}}
+  {{name}}: {{type}};
+{{/each}}
+}
+
+/**
+ * Tool implementation
+ */
+export const {{camelCaseName}}Fn: ToolFunction<{{pascalCaseName}}Result> = (
+  params
+): ToolResult<{{pascalCaseName}}Result> => {
+  const startTime = performance.now();
+
+  try {
+    // Extract and validate parameters
+{{#each parameters}}
+    const {{name}} = params.{{name}}{{#if default}} ?? {{json default}}{{/if}};
+{{#if required}}
+    if ({{name}} === undefined || {{name}} === null) {
+      return failure('{{label}} is required');
+    }
+{{/if}}
+{{/each}}
+
+    // TODO: Implement tool logic here
+    // This is a placeholder implementation
+    const result: {{pascalCaseName}}Result = {
+{{#each outputFields}}
+      {{name}}: {{placeholder}},
+{{/each}}
+    };
+
+    const duration = performance.now() - startTime;
+
+    return success(result, {
+      durationMs: duration,
+    });
+  } catch (error) {
+    return failure(
+      error instanceof Error ? error.message : 'Unknown error occurred'
+    );
+  }
+};
+
+// Export for registration
+export { {{camelCaseName}}Definition as definition };
+export { {{camelCaseName}}Fn as implementation };
